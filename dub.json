@@ -15,7 +15,24 @@
 	"libs-posix": ["dl"],
 	"libs-windows-x86_64-dmd": ["lua5.1"],
 
-	"sourceFiles-windows-x86-dmd": ["extlib/lua5.1.lib"],
-	"sourceFiles-linux-x86": ["extlib/x86_32-linux-gnu/liblua.a"],
-	"sourceFiles-linux-x86_64": ["extlib/x86_64-linux-gnu/liblua.a"],
+	"configurations":[
+		{
+			 "name":"windows-x86",
+			 "platforms":["windows-x86"],
+			 "lflags":["$PACKAGE_DIR/extlib/lua5.1.lib"],
+			 "sourceFiles-windows-x86": ["extlib/lua5.1.lib"],
+		},
+		{
+			"name":"linux-x86",
+			"platforms":["linux-x86"],
+			"lflags":["$PACKAGE_DIR/extlib/x86_32-linux-gnu/liblua.a"],
+			"sourceFiles-linux-x86": ["extlib/x86_32-linux-gnu/liblua.a"],
+		},
+		{
+			"name":"linux-x86_64",
+			"platforms":["linux-x86_64"],
+			"lflags":["$PACKAGE_DIR/extlib/x86_64-linux-gnu/liblua.a"],
+			"sourceFiles-linux-x86_64-dmd": ["extlib/x86_64-linux-gnu/liblua.a"],
+		}
+	]
 }
