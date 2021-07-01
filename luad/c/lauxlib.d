@@ -19,6 +19,7 @@ import luad.c.luaconf;
 import luad.c.lua;
 
 extern (C):
+alias lua_open = luaL_newstate;
 
 //C	 #if defined(LUA_COMPAT_GETN)
 //C	 LUALIB_API int (luaL_getn) (lua_State *L, int t);
@@ -34,11 +35,12 @@ void luaL_setn(lua_State* L, int i, int j) { }
 //C	 #if defined(LUA_COMPAT_OPENLIB)
 //C	 #define luaI_openlib	luaL_openlib
 //C	 #endif
-alias luaL_openlib luaI_openlib;
+alias luaI_openlib = luaL_openlib;
 
 
 /* extra error code for `luaL_load' */
 //C	 #define LUA_ERRFILE	 (LUA_ERRERR+1)
+const LUA_ERRFILE = LUA_ERRERR + 1;
 
 
 //C	 typedef struct luaL_Reg {
@@ -202,7 +204,7 @@ void luaL_addchar(luaL_Buffer* B, char c)
 
 /* compatibility only */
 //C	 #define luaL_putchar(B,c)	luaL_addchar(B,c)
-alias luaL_addchar luaL_putchar;
+alias luaL_putchar = luaL_addchar;
 
 //C	 #define luaL_addsize(B,n)	((B)->p += (n))
 void luaL_addsize(luaL_Buffer* B, int n) { B.p += n; }
@@ -244,7 +246,7 @@ void lua_getref(lua_State* L, int _ref) { lua_rawgeti(L, LUA_REGISTRYINDEX, _ref
 
 //C	 #define luaL_reg	luaL_Reg
 
-alias luaL_Reg luaL_reg;
+alias luaL_reg = luaL_Reg;
 //C	 #endif
 
 

@@ -16,8 +16,8 @@ import luad.c.luaconf;
 //C	 #include <stddef.h>
 
 //C	 #include "luaconf.h"
-//import luaconf;
-import luad.c.lauxlib;
+//import luad.c.luaconf;
+//import luad.c.lauxlib;
 
 extern (C):
 
@@ -46,11 +46,11 @@ const LUA_MULTRET = -1;
 ** pseudo-indices
 */
 //C	 #define LUA_REGISTRYINDEX	(-10000)
-const LUA_REGISTRYINDEX = -10000;
+const LUA_REGISTRYINDEX = -10_000;
 //C	 #define LUA_ENVIRONINDEX	(-10001)
-const LUA_ENVIRONINDEX = -10001;
+const LUA_ENVIRONINDEX = -10_001;
 //C	 #define LUA_GLOBALSINDEX	(-10002)
-const LUA_GLOBALSINDEX = -10002;
+const LUA_GLOBALSINDEX = -10_002;
 //C	 #define lua_upvalueindex(i)	(LUA_GLOBALSINDEX-(i))
 int lua_upvalueindex (int i) { return LUA_GLOBALSINDEX-i; }
 
@@ -72,24 +72,24 @@ const LUA_ERRERR = 5;
 struct lua_State {}
 
 //C	 typedef int (*lua_CFunction) (lua_State *L);
-alias int function(lua_State *L) lua_CFunction;
+alias lua_CFunction = int function(lua_State *L);
 
 
 /*
 ** functions that read/write blocks when loading/dumping Lua chunks
 */
 //C	 typedef const char * (*lua_Reader) (lua_State *L, void *ud, size_t *sz);
-alias char * function(lua_State *L, void *ud, size_t *sz)lua_Reader;
+alias lua_Reader = char * function(lua_State *L, void *ud, size_t *sz);
 
 //C	 typedef int (*lua_Writer) (lua_State *L, const void* p, size_t sz, void* ud);
-alias int  function(lua_State *L, const void *p, size_t sz, void *ud)lua_Writer;
+alias lua_Writer = int function(lua_State *L, const void *p, size_t sz, void *ud);
 
 
 /*
 ** prototype for memory-allocation functions
 */
 //C	 typedef void * (*lua_Alloc) (void *ud, void *ptr, size_t osize, size_t nsize);
-alias void * function(void *ud, void *ptr, size_t osize, size_t nsize)lua_Alloc;
+alias lua_Alloc = void * function(void *ud, void *ptr, size_t osize, size_t nsize);
 
 
 /*
@@ -134,12 +134,12 @@ const LUA_MINSTACK = 20;
 
 /* type of numbers in Lua */
 //C	 typedef LUA_NUMBER lua_Number;
-alias double lua_Number;
+alias lua_Number = double;
 
 
 /* type for integer functions */
 //C	 typedef LUA_INTEGER lua_Integer;
-alias ptrdiff_t lua_Integer;
+alias lua_Integer = ptrdiff_t ;
 
 
 
@@ -382,7 +382,7 @@ void lua_register(lua_State* L, const(char)* n, lua_CFunction f) { lua_pushcfunc
 void lua_pushcfunction(lua_State* L, lua_CFunction f) { lua_pushcclosure(L, f, 0); }
 
 //C	 #define lua_strlen(L,i)		lua_objlen(L, (i))
-alias lua_objlen lua_strlen;
+alias lua_strlen = lua_objlen ;
 
 //C	 #define lua_isfunction(L,n)	(lua_type(L, (n)) == LUA_TFUNCTION)
 bool lua_isfunction(lua_State* L, int n) { return lua_type(L, n) == LUA_TFUNCTION; }
@@ -420,7 +420,7 @@ const(char)* lua_tostring(lua_State* L, int i) { return lua_tolstring(L, i, null
 */
 
 //C	 #define lua_open()	luaL_newstate()
-alias luaL_newstate lua_open;
+// defined in lauxlib.d
 
 //C	 #define lua_getregistry(L)	lua_pushvalue(L, LUA_REGISTRYINDEX)
 void lua_getregistry(lua_State* L) { lua_pushvalue(L, LUA_REGISTRYINDEX); }
@@ -430,9 +430,9 @@ int lua_getgccount(lua_State* L) { return lua_gc(L, LUA_GCCOUNT, 0); }
 
 //C	 #define lua_Chunkreader		lua_Reader
 //C	 #define lua_Chunkwriter		lua_Writer
-alias lua_Reader lua_Chunkreader;
+alias lua_Chunkreader = lua_Reader;
 
-alias lua_Writer lua_Chunkwriter;
+alias lua_Chunkwriter = lua_Writer;
 
 
 /*
@@ -474,7 +474,7 @@ const LUA_MASKCOUNT = 1 << LUA_HOOKCOUNT;
 
 /* Functions to be called by the debuger in specific events */
 //C	 typedef void (*lua_Hook) (lua_State *L, lua_Debug *ar);
-alias void  function(lua_State *L, lua_Debug *ar)lua_Hook;
+alias lua_Hook = void function(lua_State *L, lua_Debug *ar);
 
 
 //C	 LUA_API int lua_getstack (lua_State *L, int level, lua_Debug *ar);
