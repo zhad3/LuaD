@@ -24,10 +24,10 @@ extern (C):
 //C	 #define LUA_VERSION	"Lua 5.1"
 string LUA_VERSION = "Lua 5.1";
 //C	 #define LUA_RELEASE	"Lua 5.1.2"
-string LUA_RELEASE = "Lua 5.1.2";
+string LUA_RELEASE = "Lua 5.1.5";
 //C	 #define LUA_VERSION_NUM	501
 //C	 #define LUA_COPYRIGHT	"Copyright (C) 1994-2007 Lua.org, PUC-Rio"
-string LUA_COPYRIGHT = "Copyright (C) 1994-2007 Lua.org, PUC-Rio";
+string LUA_COPYRIGHT = "Copyright (C) 1994-2012 Lua.org, PUC-Rio";
 enum LUA_VERSION_NUM = 501;
 //C	 #define LUA_AUTHORS 	"R. Ierusalimschy, L. H. de Figueiredo & W. Celes"
 string LUA_AUTHORS = "R. Ierusalimschy, L. H. de Figueiredo & W. Celes";
@@ -35,7 +35,7 @@ string LUA_AUTHORS = "R. Ierusalimschy, L. H. de Figueiredo & W. Celes";
 
 /* mark for precompiled code (`<esc>Lua') */
 //C	 #define	LUA_SIGNATURE	"\033Lua"
-const char[] LUA_SIGNATURE = "\033Lua";
+const char[] LUA_SIGNATURE = "\x1bLua";
 
 /* option for multiple returns in `lua_pcall' and `lua_call' */
 //C	 #define LUA_MULTRET	(-1)
