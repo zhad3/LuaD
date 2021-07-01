@@ -8,3 +8,4 @@ void main()
 	auto print = lua.get!LuaFunction("print");
 	print("Hello, world!");
 }
+
