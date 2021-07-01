@@ -234,6 +234,22 @@ public:
 	}
 
 	/**
+	 * Compile a buffer of Lua code.
+	 * Params:
+	 *	 buffer = _buffer of Lua code
+     *	 name = _name of the buffer. Used in debug and error messages
+	 * Returns:
+	 *   Loaded code as a function.
+	 */
+    LuaFunction loadBuffer(in char[] buffer, in string name = "Unknown buffer") @trusted
+    {
+        if(luaL_loadbuffer(L, buffer.ptr, buffer.length, name.ptr) != 0)
+            lua_error(L);
+
+        return popValue!LuaFunction(L);
+    }
+
+	/**
 	 * Execute a string of Lua _code.
 	 * Params:
 	 *	 code = _code to run
@@ -269,6 +285,37 @@ public:
 		auto top = lua_gettop(L);
 
 		doChunk!(luaL_loadfile)(path, handler);
+
+		auto nret = lua_gettop(L) - top;
+
+		return popStack(L, nret);
+	}
+
+	/**
+	 * Execute a buffer of Lua code.
+	 * Params:
+	 *	 buffer = _buffer of Lua code
+     *	 name = _name of the buffer. Used in debug and error messages
+	 *   handler = error handling scheme
+	 * Returns:
+	 *	 Any script return values
+	 * See_Also:
+	 *   $(MREF LuaErrorHandler)
+	 */
+	LuaObject[] doBuffer(in char[] buffer,
+            in string name = "Unknown buffer",
+            LuaErrorHandler handler = LuaErrorHandler.None) @trusted
+	{
+		auto top = lua_gettop(L);
+
+		if(handler == LuaErrorHandler.Traceback)
+			pushErrorHandler();
+
+		if(loadBuffer(buffer, name).isNil || lua_pcall(L, 0, LUA_MULTRET, handler == LuaErrorHandler.Traceback? -2 : 0))
+			lua_error(L);
+
+		if(handler == LuaErrorHandler.Traceback)
+			lua_remove(L, 1);
 
 		auto nret = lua_gettop(L) - top;
 
