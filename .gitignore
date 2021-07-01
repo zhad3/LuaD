@@ -12,3 +12,6 @@
 .dub
 /dub.selections.json
 
+build/
+*.o
+liblua5.1.*
