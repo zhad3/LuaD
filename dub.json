@@ -12,27 +12,12 @@
 	"sourcePaths": ["luad"],
 	"importPaths": ["."],
 
-	"libs-posix": ["dl"],
-	"libs-windows-x86_64-dmd": ["lua5.1"],
+    "preBuildCommands-linux": ["/bin/sh build_clibs.sh $ARCH $PLATFORM $PACKAGE_DIR"],
+    "preBuildCommands-windows": ["cmd /c \"build_clibs.bat $ARCH $PLATFORM $PACKAGE_DIR\""],
 
-	"configurations":[
-		{
-			 "name":"windows-x86",
-			 "platforms":["windows-x86"],
-			 "lflags":["$PACKAGE_DIR/extlib/lua5.1.lib"],
-			 "sourceFiles-windows-x86": ["extlib/lua5.1.lib"],
-		},
-		{
-			"name":"linux-x86",
-			"platforms":["linux-x86"],
-			"lflags":["$PACKAGE_DIR/extlib/x86_32-linux-gnu/liblua.a"],
-			"sourceFiles-linux-x86": ["extlib/x86_32-linux-gnu/liblua.a"],
-		},
-		{
-			"name":"linux-x86_64",
-			"platforms":["linux-x86_64"],
-			"lflags":["$PACKAGE_DIR/extlib/x86_64-linux-gnu/liblua.a"],
-			"sourceFiles-linux-x86_64-dmd": ["extlib/x86_64-linux-gnu/liblua.a"],
-		}
-	]
+    "sourceFiles-linux": ["$PACKAGE_DIR/c/build/liblua5.1.a"],
+    "sourceFiles-windows": ["$PACKAGE_DIR/c/build/liblua5.1.lib"],
+
+    "lflags-linux": ["$PACKAGE_DIR/c/build/liblua5.1.a"],
+    "lflags-windows": ["$PACKAGE_DIR/c/build/liblua5.1.lib"]
 }
