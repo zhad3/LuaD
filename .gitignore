@@ -14,4 +14,6 @@
 
 build/
 *.o
+*.obj
+*.pdb
 liblua5.1.*
