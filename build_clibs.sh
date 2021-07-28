@@ -1,27 +1,39 @@
 #!/bin/bash
 OLD_PWD=$PWD
-ARCH=$1
-PLATFORM=$2
-PACKAGE_DIR=$3
+PACKAGE_DIR=$1
+ARCH=$DUB_ARCH
+PLATFORM=$DUB_PLATFORM
+BUILD_TYPE=$DUB_BUILD_TYPE
 
-if [ ! -d "$PACKAGE_DIR/c/build" ]; then
-    mkdir -p "$PACKAGE_DIR/c/build"
+if [ "$PLATFORM"="posix" ]; then
+    PLATFORM=linux
 fi
 
-if [ -f "$PACKAGE_DIR/c/build/liblua5.1.a" ]; then
+DEST_DIR=$PACKAGE_DIR/c/build/$ARCH-$BUILD_TYPE
+
+if [ ! -d "$DEST_DIR" ]; then
+    mkdir -p "$DEST_DIR"
+fi
+
+if [ -f "$DEST_DIR/liblua5.1.a" ] && [ -z $DUB_FORCE ]; then
     exit
 fi
 
-cd $PACKAGE_DIR/c/lua5.1.5
+cd "$PACKAGE_DIR/c/lua5.1.5"
 
 if [ $ARCH = "x86_64" ]; then
-    ARCH="64"
+    ARCH_LUA="64"
 elif [ $ARCH = "x86" ]; then
-    ARCH="32"
+    ARCH_LUA="32"
+else
+    ARCH_LUA=$ARCH
 fi
 
-make ARCH=$ARCH PLATFORM=$PLATFORM
+make ARCH=$ARCH_LUA PLATFORM=$PLATFORM
 
-cd $OLD_PWD
+mv "$PACKAGE_DIR/c/lua5.1.5/src/liblua5.1.a" "$DEST_DIR"
 
-cp "$PACKAGE_DIR/c/lua5.1.5/src/liblua5.1.a" "$PACKAGE_DIR/c/build/"
+make clean
+
+cd "$OLD_PWD"
+
