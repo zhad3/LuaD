@@ -29,6 +29,8 @@ else
     ARCH_LUA=$ARCH
 fi
 
+MYCFLAGS=-fPIC
+
 make ARCH=$ARCH_LUA PLATFORM=$PLATFORM
 
 mv "$PACKAGE_DIR/c/lua5.1.5/src/liblua5.1.a" "$DEST_DIR"
