@@ -5,7 +5,12 @@ set PACKAGE_DIR=%~1
 set ARCH=%DUB_ARCH%
 set BUILD_TYPE=%DUB_BUILD_TYPE%
 
+echo PACKAGE_DIR=%PACKAGE_DIR%
+echo ARCH=%ARCH%
+echo BUILD_TYPE=%BUILD_TYPE%
+
 set DEST_DIR=%PACKAGE_DIR%\c\build\%ARCH%-%BUILD_TYPE%
+echo DEST_DIR=%DEST_DIR%
 
 IF NOT EXIST "%DEST_DIR%" (
     mkdir "%DEST_DIR%"
@@ -24,7 +29,8 @@ IF NOT DEFINED VSINSTALLDIR (
 IF "%BUILD_TYPE%"=="debug" (set CL_OPTS=/Zi /nologo /w /WX- /Od /Oi /D _DEBUG /D _WINDOWS /D _MBCS /EHsc /Fd"liblua.pdb")
 IF "%BUILD_TYPE%"=="release" (set CL_OPTS=/Zi /nologo /w /WX- /Ox /Oi /D NDEBUG /D _WINDOWS /D _MBCS /EHsc)
 
-cd "%PACKAGE_DIR%\c\lua5.1.5\src"
+cd /d "%PACKAGE_DIR%\c\lua5.1.5\src"
+echo CD=%CD%
 
 set LUA_A=liblua5.1.lib
 
@@ -44,3 +50,5 @@ cl.exe /c %CL_OPTS% %CORE_C% %LIB_C%
 lib.exe /nologo /out:"%DEST_DIR%\%LUA_A%" %CORE_O% %LIB_O%
 
 IF "%BUILD_TYPE%"=="debug" (move "%PACKAGE_DIR%\c\lua5.1.5\src\liblua.pdb" "%DEST_DIR%\liblua.pdb")
+
+cd /d "%OLD_CD%"
