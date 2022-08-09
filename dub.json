@@ -12,8 +12,8 @@
 	"sourcePaths": ["luad"],
 	"importPaths": ["."],
 
-    "preBuildCommands-linux": ["/bin/sh build_clibs.sh \"$PACKAGE_DIR\""],
-    "preBuildCommands-windows": ["cmd /c \"build_clibs.bat \"$PACKAGE_DIR\"\""],
+    "preBuildCommands-linux": ["/bin/sh \"$PACKAGE_DIR/build_clibs.sh\" \"$PACKAGE_DIR\""],
+    "preBuildCommands-windows": ["cmd /c \"\"$PACKAGE_DIR/build_clibs.bat\" \"$PACKAGE_DIR\"\""],
 
     "sourceFiles-linux": ["$PACKAGE_DIR/c/build/$ARCH-$BUILD_TYPE/liblua5.1.a"],
     "sourceFiles-windows": ["$PACKAGE_DIR/c/build/$ARCH-$BUILD_TYPE/liblua5.1.lib"],
