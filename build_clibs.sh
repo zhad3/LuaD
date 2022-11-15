@@ -1,13 +1,18 @@
 #!/bin/bash
 OLD_PWD=$PWD
 PACKAGE_DIR=$1
-ARCH=$DUB_ARCH
-PLATFORM=$DUB_PLATFORM
+ARCH=${DUB_ARCH%% *}
+PLATFORM=${DUB_PLATFORM%% *}
 BUILD_TYPE=$DUB_BUILD_TYPE
 
 if [ "$PLATFORM"="posix" ]; then
     PLATFORM=linux
 fi
+
+echo PACKAGE_DIR=$PACKAGE_DIR
+echo ARCH=$ARCH
+echo PLATFORM=$PLATFORM
+echo BUILD_TYPE=$BUILD_TYPE
 
 DEST_DIR=$PACKAGE_DIR/c/build/$ARCH-$BUILD_TYPE
 
@@ -21,9 +26,9 @@ fi
 
 cd "$PACKAGE_DIR/c/lua5.1.5"
 
-if [ $ARCH = "x86_64" ]; then
+if [ "$ARCH" = "x86_64" ]; then
     ARCH_LUA="64"
-elif [ $ARCH = "x86" ]; then
+elif [ "$ARCH" = "x86" ]; then
     ARCH_LUA="32"
 else
     ARCH_LUA=$ARCH
@@ -31,7 +36,7 @@ fi
 
 MYCFLAGS=-fPIC
 
-make ARCH=$ARCH_LUA PLATFORM=$PLATFORM
+make ARCH=$ARCH_LUA PLAT=$PLATFORM
 
 mv "$PACKAGE_DIR/c/lua5.1.5/src/liblua5.1.a" "$DEST_DIR"
 
